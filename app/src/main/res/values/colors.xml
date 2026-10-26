@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_80">#D0BCFF</color>
+    <color name="purple_grey_80">#CCC2DC</color>
+    <color name="pink_80">#EFB8C8</color>
+
+    <color name="purple_40">#6650a4</color>
+    <color name="purple_grey_40">#625b71</color>
+    <color name="pink_40">#7D5260</color>
+
+    <!-- Studio Dark Theme Palette -->
+    <color name="studio_bg_dark">#12131C</color>
+    <color name="studio_surface_dark">#1E202E</color>
+    <color name="studio_primary">#6C5CE7</color>
+    <color name="studio_accent">#00CEC9</color>
+    <color name="studio_chinese_red">#D63031</color>
+    <color name="studio_gold">#FDCB6E</color>
+</resources>
