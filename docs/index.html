@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoiceSong Studio Documentation | Android Native Music Production App in Kotlin</title>
+  <meta name="description" content="Official documentation for VoiceSong Studio: An Android native music production app in Kotlin and Jetpack Compose that transforms voice recordings into Chinese instruments, Western instruments, drums, bass, and multi-track songs.">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="site-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle Navigation">☰</button>
+      <a href="#overview" class="brand">
+        <div class="brand-icon">🎙️</div>
+        <span>VoiceSong Studio</span>
+        <span class="badge-version">v1.0.0</span>
+      </a>
+    </div>
+
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="docs-search-input" placeholder="Search documentation (e.g. Erhu, DSP, YIN, Compose)..." autocomplete="off">
+    </div>
+
+    <div class="header-right">
+      <a href="#playground" class="nav-link">🎵 Playground</a>
+      <a href="#instruments" class="nav-link">🎻 Instruments</a>
+      <a href="#architecture" class="nav-link">📐 Architecture</a>
+      <a href="https://github.com/ijobregister/make-music-by-voice-recording" target="_blank" rel="noopener noreferrer" class="btn-github">
+        <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <!-- Docs Container -->
+  <div class="docs-container">
+
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="sidebar-title">Getting Started</div>
+        <ul class="sidebar-nav">
+          <li><a href="#overview" class="sidebar-link active">App Overview</a></li>
+          <li><a href="#quickstart" class="sidebar-link">Quickstart Guide</a></li>
+          <li><a href="#android-studio" class="sidebar-link">Android Studio Setup</a></li>
+          <li><a href="#demo-song" class="sidebar-link">Silk Road Beats Demo</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-title">Interactive Demo</div>
+        <ul class="sidebar-nav">
+          <li><a href="#playground" class="sidebar-link">Web Audio Playground</a></li>
+          <li><a href="#scale-quantizer" class="sidebar-link">Pentatonic Scale Snapping</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-title">Sound Transformation</div>
+        <ul class="sidebar-nav">
+          <li><a href="#instruments" class="sidebar-link">Instrument Catalog</a></li>
+          <li><a href="#chinese-instruments" class="sidebar-link">Chinese Instruments</a></li>
+          <li><a href="#western-instruments" class="sidebar-link">Western Instruments</a></li>
+          <li><a href="#beatbox-drums" class="sidebar-link">Beatbox Drum Kit</a></li>
+          <li><a href="#bass-vocal" class="sidebar-link">Bass & Vocal FX</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-title">DSP & Architecture</div>
+        <ul class="sidebar-nav">
+          <li><a href="#dsp-pipeline" class="sidebar-link">Audio Pipeline Design</a></li>
+          <li><a href="#yin-pitch" class="sidebar-link">YIN Pitch Detection</a></li>
+          <li><a href="#transient-analysis" class="sidebar-link">Transient & ZCR Analysis</a></li>
+          <li><a href="#physical-modeling" class="sidebar-link">Physical Modeling & IIR</a></li>
+          <li><a href="#multitrack-mixer" class="sidebar-link">Multi-Track Stereo Mixer</a></li>
+          <li><a href="#wav-export" class="sidebar-link">WAV Export & Sharing</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-title">API & Code Structure</div>
+        <ul class="sidebar-nav">
+          <li><a href="#package-structure" class="sidebar-link">Package Structure</a></li>
+          <li><a href="#api-reference" class="sidebar-link">Core Classes Reference</a></li>
+          <li><a href="#troubleshooting" class="sidebar-link">Troubleshooting & FAQ</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="docs-content">
+
+      <!-- Hero Section -->
+      <section class="hero-section" id="overview">
+        <div class="hero-tag">Android Native • Jetpack Compose • Kotlin 2.0 • Zero NDK</div>
+        <h1 class="hero-title">
+          Turn your <span class="gradient-text">voice</span> into any instrument.
+        </h1>
+        <p class="hero-subtitle">
+          <strong>VoiceSong Studio</strong> is a complete native Android Digital Audio Workstation (DAW) written in Kotlin.
+          It captures human voice recordings—humming, whistling, singing, or beatboxing—extracts pitch contours and percussive transients in real time, and synthesizes authentic acoustic & electronic instruments: <strong>Erhu (二胡), Guzheng (古筝), Dizi (笛子), Grand Piano, Violin, Beatbox Drums, 808 Sub Bass, and Vocal Vocoders</strong>.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#playground" class="btn-primary">
+            <span>🎵 Launch Audio Playground</span>
+          </a>
+          <a href="#android-studio" class="btn-secondary">
+            <span>⚙️ Open in Android Studio</span>
+          </a>
+          <a href="https://github.com/ijobregister/make-music-by-voice-recording" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            <span>⭐ View GitHub Repo</span>
+          </a>
+        </div>
+
+        <div class="badge-row">
+          <span class="tech-badge">Kotlin 2.0.0</span>
+          <span class="tech-badge">Jetpack Compose 2024.08.00</span>
+          <span class="tech-badge">Min SDK 24 (Android 7.0+)</span>
+          <span class="tech-badge">Target SDK 34 (Android 14)</span>
+          <span class="tech-badge">AudioRecord & AudioTrack</span>
+          <span class="tech-badge">16-bit 44.1 kHz Stereo Master</span>
+        </div>
+      </section>
+
+      <!-- Interactive Web Audio Playground -->
+      <section id="playground">
+        <h2 class="section-heading">
+          <span>🎵 Interactive Web Audio Playground</span>
+        </h2>
+        <p>
+          Experience how VoiceSong Studio's procedural audio synthesis engine turns mathematical waveforms, resonant formant filters, and Karplus-Strong string models into musical instruments right inside your web browser!
+        </p>
+
+        <div class="playground-box">
+          <div class="playground-header">
+            <div class="playground-title">
+              <span>🎛️ Realtime Synthesizer & Oscilloscope</span>
+            </div>
+            <div class="playground-status">
+              <span class="status-dot"></span>
+              <span>Web Audio API Active (Click any pad to preview sound)</span>
+            </div>
+          </div>
+
+          <!-- Live Oscilloscope Canvas -->
+          <div class="canvas-wrapper">
+            <span class="canvas-overlay-text">REALTIME OSCILLOSCOPE // 44.1 kHz</span>
+            <canvas id="oscilloscope"></canvas>
+          </div>
+
+          <!-- Sound Pads -->
+          <div class="instrument-pads">
+            <div class="sound-pad" data-instrument="erhu">
+              <span class="pad-icon">🎻</span>
+              <span class="pad-name">Erhu (二胡)</span>
+              <span class="pad-category">Chinese String</span>
+            </div>
+            <div class="sound-pad" data-instrument="guzheng">
+              <span class="pad-icon">🪕</span>
+              <span class="pad-name">Guzheng (古筝)</span>
+              <span class="pad-category">Chinese Zither</span>
+            </div>
+            <div class="sound-pad" data-instrument="dizi">
+              <span class="pad-icon">🪈</span>
+              <span class="pad-name">Dizi (笛子)</span>
+              <span class="pad-category">Bamboo Flute</span>
+            </div>
+            <div class="sound-pad" data-instrument="piano">
+              <span class="pad-icon">🎹</span>
+              <span class="pad-name">Grand Piano</span>
+              <span class="pad-category">Western Keys</span>
+            </div>
+            <div class="sound-pad" data-instrument="violin">
+              <span class="pad-icon">🎻</span>
+              <span class="pad-name">Violin Strings</span>
+              <span class="pad-category">Bowed Orchestra</span>
+            </div>
+            <div class="sound-pad" data-instrument="kick">
+              <span class="pad-icon">🥁</span>
+              <span class="pad-name">Beatbox Kick</span>
+              <span class="pad-category">Voice Thud</span>
+            </div>
+            <div class="sound-pad" data-instrument="snare">
+              <span class="pad-icon">💥</span>
+              <span class="pad-name">Beatbox Snare</span>
+              <span class="pad-category">Voice "Ka"</span>
+            </div>
+            <div class="sound-pad" data-instrument="hihat">
+              <span class="pad-icon">✨</span>
+              <span class="pad-name">Closed Hi-Hat</span>
+              <span class="pad-category">Voice "Tss"</span>
+            </div>
+            <div class="sound-pad" data-instrument="bass">
+              <span class="pad-icon">🔊</span>
+              <span class="pad-name">808 Sub Bass</span>
+              <span class="pad-category">Deep Sub</span>
+            </div>
+          </div>
+
+          <!-- Interactive Scale Quantizer -->
+          <div class="pitch-quantizer-box" id="scale-quantizer">
+            <div class="quantizer-header">
+              <span>🎼 <strong>Chinese Pentatonic Gong Scale (宫调式五声音阶)</strong>: Click a degree to audition through selected instrument</span>
+              <span>Root: C4 (261.63 Hz)</span>
+            </div>
+            <div class="scale-notes-row">
+              <div class="scale-note-pill" data-freq="261.63">
+                <div class="scale-note-name">C4</div>
+                <div class="scale-note-degree">1 (宫 Gong)</div>
+              </div>
+              <div class="scale-note-pill" data-freq="293.66">
+                <div class="scale-note-name">D4</div>
+                <div class="scale-note-degree">2 (商 Shang)</div>
+              </div>
+              <div class="scale-note-pill" data-freq="329.63">
+                <div class="scale-note-name">E4</div>
+                <div class="scale-note-degree">3 (角 Jiao)</div>
+              </div>
+              <div class="scale-note-pill" data-freq="392.00">
+                <div class="scale-note-name">G4</div>
+                <div class="scale-note-degree">5 (徵 Zhi)</div>
+              </div>
+              <div class="scale-note-pill" data-freq="440.00">
+                <div class="scale-note-name">A4</div>
+                <div class="scale-note-degree">6 (羽 Yu)</div>
+              </div>
+              <div class="scale-note-pill" data-freq="523.25">
+                <div class="scale-note-name">C5</div>
+                <div class="scale-note-degree">1̇ (高音宫)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quickstart Guide -->
+      <section id="quickstart">
+        <h2 class="section-heading">
+          <span>🚀 Quickstart Guide</span>
+        </h2>
+        <p>VoiceSong Studio was designed so anyone without formal musical training can build full multi-track songs in under 2 minutes:</p>
+
+        <div class="architecture-flow">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h4>Pick or Create a Track</h4>
+              <p>Select an instrument track (e.g. <em>Beatbox Drum Kit</em>, <em>Erhu Lead</em>, <em>808 Bass</em>, or <em>Guzheng Pluck</em>). Choose the musical scale you wish your vocal pitch to snap to (e.g. Traditional Chinese Pentatonic <em>Gong</em> or Western <em>Natural Minor</em>).</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h4>Record Your Voice</h4>
+              <p>Tap the <strong>Mic</strong> icon. Beatbox thuds and "ka" sounds for drums, or hum/sing melodic phrases for strings and synths. The live RMS waveform monitors your voice volume in real time.</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h4>Instant DSP Transformation & Preview</h4>
+              <p>The app analyzes fundamental pitch and transient zero-crossing rate, synthesizes the chosen instrument, and plays an instant preview. Adjust octave shifts (-2 to +2) or switch instruments on the fly with a single tap.</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h4>Multi-Track Mixing & Master Export</h4>
+              <p>Adjust Volume faders (0–120%), Pan (L100% to R100%), Solo (S), or Mute (M). Set your BPM tempo and loop length. When satisfied, tap <strong>Export</strong> to render an uncompressed 16-bit 44.1 kHz stereo <code>.WAV</code> master track and share it anywhere!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Android Studio Setup -->
+      <section id="android-studio">
+        <h2 class="section-heading">
+          <span>🛠️ Android Studio Setup & Build</span>
+        </h2>
+        <p>VoiceSong Studio is 100% native Kotlin with Jetpack Compose. It requires no external native C++ toolchains or complicated NDK setups.</p>
+
+        <div class="callout tip">
+          <div class="callout-title">💡 System Prerequisites</div>
+          <p>• Android Studio Iguana, Koala, Ladybug, Meerkat, or newer.<br>
+             • JDK 17 or higher (bundled with modern Android Studio JBR).<br>
+             • Android device or emulator running Android 7.0+ (API Level 24+).</p>
+        </div>
+
+        <h3 class="sub-heading">Clone & Open the Project</h3>
+        <p>Clone the repository and open it directly in Android Studio:</p>
+
+        <div class="code-block-container">
+          <div class="code-header">
+            <span>Terminal (Git)</span>
+            <button class="btn-copy">Copy</button>
+          </div>
+          <pre><code>git clone https://github.com/ijobregister/make-music-by-voice-recording.git
+cd make-music-by-voice-recording</code></pre>
+        </div>
+
+        <ol style="margin-left: 20px; color: var(--text-muted); line-height: 1.8;">
+          <li>Launch <strong>Android Studio</strong>.</li>
+          <li>Click <strong>Open</strong> and choose the <code>VoiceSongStudio</code> directory (or cloned repo folder).</li>
+          <li>Android Studio will automatically detect the Gradle Wrapper (`gradle-8.9`) and sync dependencies from <code>gradle/libs.versions.toml</code>.</li>
+          <li>Connect your physical Android phone via USB/WiFi debugging, or start an Android Virtual Device (AVD).</li>
+          <li>Click the green <strong>Run ▶</strong> button (`Shift + F10`) to build and launch the app!</li>
+        </ol>
+
+        <h3 class="sub-heading" id="demo-song">Pre-loaded "Silk Road Beats" Demo</h3>
+        <p>
+          Don't have time to record right now? Simply tap the <strong>Play ▶</strong> button in the bottom transport bar immediately after launching the app!
+          The app comes pre-configured with a rich 6-track Asian Fusion demonstration song:
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Track Name</th>
+                <th>Instrument</th>
+                <th>Pan</th>
+                <th>Volume</th>
+                <th>Musical Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Beatbox Drums</strong></td>
+                <td>🥁 Beatbox Drum Kit</td>
+                <td>Center (0.0)</td>
+                <td>90%</td>
+                <td>Punchy 92 BPM boom-bap rhythm (Kick, Snare, Closed & Open Hi-Hats)</td>
+              </tr>
+              <tr>
+                <td><strong>808 Bassline</strong></td>
+                <td>🔊 808 Sub Bass</td>
+                <td>Center (0.0)</td>
+                <td>85%</td>
+                <td>Sub-frequency harmonic bassline (C2 -> G2 -> A2 -> F2)</td>
+              </tr>
+              <tr>
+                <td><strong>Erhu Lead (二胡)</strong></td>
+                <td>🎻 Erhu</td>
+                <td>Left 15%</td>
+                <td>95%</td>
+                <td>Expressive bowed Chinese Pentatonic Gong melody with vibrato</td>
+              </tr>
+              <tr>
+                <td><strong>Guzheng Pluck (古筝)</strong></td>
+                <td>🪕 Guzheng</td>
+                <td>Right 35%</td>
+                <td>70%</td>
+                <td>Shimmering 21-string plucked zither arpeggio figures</td>
+              </tr>
+              <tr>
+                <td><strong>Grand Piano</strong></td>
+                <td>🎹 Grand Piano</td>
+                <td>Left 30%</td>
+                <td>65%</td>
+                <td>Concert piano harmonic backing chords</td>
+              </tr>
+              <tr>
+                <td><strong>Groove Shakers</strong></td>
+                <td>🪇 Percussion & Shaker</td>
+                <td>Right 20%</td>
+                <td>50%</td>
+                <td>16th-note syncopated acoustic shakers</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Instrument Catalog -->
+      <section id="instruments">
+        <h2 class="section-heading">
+          <span>🎻 Instrument Catalog & Acoustic Principles</span>
+        </h2>
+        <p>
+          Every instrument in VoiceSong Studio is modeled using tailored digital signal processing algorithms that preserve human expression while imparting the acoustic physics of the target instrument.
+        </p>
+
+        <!-- Chinese Instruments -->
+        <h3 class="sub-heading" id="chinese-instruments">Traditional Chinese Instruments (民族乐器)</h3>
+        <div class="cards-grid">
+          <div class="doc-card">
+            <div class="card-icon">🎻</div>
+            <div class="card-title">Erhu (二胡)</div>
+            <div class="card-desc">
+              Two-string bowed fiddle with a snakeskin-covered hexagonal resonator. Produces a haunting, nasal, and vocal-like timbre with continuous pitch glides and natural 5.2 Hz vibrato.
+            </div>
+            <span class="card-tag">Stick-slip saw + dual python formants (1050 Hz & 3200 Hz)</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🪕</div>
+            <div class="card-title">Guzheng (古筝)</div>
+            <div class="card-desc">
+              21-string Chinese plucked zither with movable bridges. Features a crisp attack, long shimmering metallic decay, and warm hollow paulownia wood body resonance.
+            </div>
+            <span class="card-tag">Karplus-Strong physical pluck + 420 Hz body resonance</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🪈</div>
+            <div class="card-title">Dizi (笛子)</div>
+            <div class="card-desc">
+              Chinese transverse bamboo flute with an extra hole covered by a thin reed membrane (dimo). Generates a bright, buzzing acoustic overtone and gentle breath air turbulence.
+            </div>
+            <span class="card-tag">Dimo non-linear membrane saturation + 3.5 kHz breath bandpass</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🎸</div>
+            <div class="card-title">Pipa (琵琶)</div>
+            <div class="card-desc">
+              Four-string Chinese pear-shaped lute played with rapid finger rolls (lunzhi). Known for its percussive, sharp transient plucks and rapid acoustic decay.
+            </div>
+            <span class="card-tag">High-damping Karplus-Strong + 580 Hz body cavity filter</span>
+          </div>
+        </div>
+
+        <!-- Western Instruments -->
+        <h3 class="sub-heading" id="western-instruments">Western Instruments</h3>
+        <div class="cards-grid">
+          <div class="doc-card">
+            <div class="card-icon">🎹</div>
+            <div class="card-title">Grand Piano</div>
+            <div class="card-desc">
+              Concert grand piano featuring multi-harmonic additive synthesis with dynamic hammer strike velocity envelopes and 0.4 Hz unison string beating.
+            </div>
+            <span class="card-tag">5-harmonic additive spectrum + unison beating</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🎻</div>
+            <div class="card-title">Violin / Strings</div>
+            <div class="card-desc">
+              Orchestral bowed violin utilizing stick-slip sawtooth generation coupled with Hutchins violin body wood and air formants (280 Hz, 460 Hz, and 2800 Hz).
+            </div>
+            <span class="card-tag">3-band Hutchins body filter + 5.8 Hz vibrato</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🎸</div>
+            <div class="card-title">Acoustic Guitar</div>
+            <div class="card-desc">
+              Steel & nylon string acoustic guitar model utilizing low-pass filtered delay line feedback coupled with an 180 Hz Helmholtz air resonance filter.
+            </div>
+            <span class="card-tag">Karplus-Strong feedback + 180 Hz body resonance</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🎷</div>
+            <div class="card-title">Saxophone</div>
+            <div class="card-desc">
+              Warm reed wind instrument with non-linear reed pressure saturation and a 1400 Hz resonant brass bell formant filter.
+            </div>
+            <span class="card-tag">Non-linear tanh waveshaper + 1.4 kHz horn bell filter</span>
+          </div>
+        </div>
+
+        <!-- Drums & Percussion -->
+        <h3 class="sub-heading" id="beatbox-drums">Beatbox Drums & Percussion</h3>
+        <div class="cards-grid">
+          <div class="doc-card">
+            <div class="card-icon">🥁</div>
+            <div class="card-title">Beatbox Drum Kit</div>
+            <div class="card-desc">
+              Analyzes chest thuds, vocal pops, and hiss sounds to trigger procedurally synthesized Kicks (160 Hz -> 48 Hz drop), Snares (180 Hz tone + 2.2 kHz noise crackle), and Hi-Hats.
+            </div>
+            <span class="card-tag">Zero-Crossing Rate (ZCR) spectral classification</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🪇</div>
+            <div class="card-title">Percussion & Shakers</div>
+            <div class="card-desc">
+              Converts vocal rhythmic chattering into tuned toms, wooden blocks, and high-frequency 6 kHz bandpass shaker grains with symmetric envelopes.
+            </div>
+            <span class="card-tag">6 kHz resonant noise grains + downward pitch sweeps</span>
+          </div>
+        </div>
+
+        <!-- Bass & Vocal FX -->
+        <h3 class="sub-heading" id="bass-vocal">Basslines & Vocal FX</h3>
+        <div class="cards-grid">
+          <div class="doc-card">
+            <div class="card-icon">🔊</div>
+            <div class="card-title">808 Sub Bass</div>
+            <div class="card-desc">
+              Tracks your vocal pitch down into the 35–130 Hz sub-bass register, applying warm soft-saturation overdrive to generate fat modern hip-hop sub hits.
+            </div>
+            <span class="card-tag">Octave-shifted sub sine + 250 Hz low-pass saturation</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">⚡</div>
+            <div class="card-title">Synth Funk Bass</div>
+            <div class="card-desc">
+              Punchy, resonant sawtooth bassline with a 650 Hz resonant low-pass filter following pitch transitions.
+            </div>
+            <span class="card-tag">Analog saw oscillator + resonant low-pass filter (Q=2.8)</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🎤</div>
+            <div class="card-title">Pitch-Correct Vocal (Autotune)</div>
+            <div class="card-desc">
+              Quantizes off-pitch singing notes in real time, snapping each frame to the nearest scale degree in the selected musical key.
+            </div>
+            <span class="card-tag">Nearest-interval pitch snap + phase resampling</span>
+          </div>
+
+          <div class="doc-card">
+            <div class="card-icon">🤖</div>
+            <div class="card-title">Robot Vocoder</div>
+            <div class="card-desc">
+              Synthesizer carrier wave (sawtooth + sub pulse) modulated by 4 formant analysis bands (300 Hz, 800 Hz, 1600 Hz, 3200 Hz) extracted from your spoken voice.
+            </div>
+            <span class="card-tag">4-band IIR filterbank vocoder modulator</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- DSP & Audio Architecture Deep Dive -->
+      <section id="dsp-pipeline">
+        <h2 class="section-heading">
+          <span>📐 DSP & Audio Architecture Deep Dive</span>
+        </h2>
+        <p>
+          VoiceSong Studio achieves ultra-low latency and deterministic audio synthesis entirely in Kotlin without requiring complex C++ NDK bindings. Here is how the processing pipeline functions:
+        </p>
+
+        <div class="architecture-flow">
+          <div class="flow-step">
+            <div class="step-num">A</div>
+            <div class="step-content">
+              <h4>AudioRecord Capture & RMS Gating</h4>
+              <p>Captures 16-bit 44.1 kHz PCM audio on a dedicated <code>Dispatchers.IO</code> coroutine. Computes RMS energy across 1024-sample windows to dynamically isolate vocal signals from room silence.</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">B</div>
+            <div class="step-content">
+              <h4>YIN Fundamental Frequency (F0) Extraction</h4>
+              <p>Implements the Cumulative Mean Normalized Difference Function (CMNDF) with a 0.15 aperiodic threshold and 3-point parabolic interpolation for sub-sample fundamental frequency estimation (65 Hz to 1200 Hz).</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">C</div>
+            <div class="step-content">
+              <h4>Transient & Zero-Crossing Rate (ZCR) Classifier</h4>
+              <p>Computes spectral flux and zero-crossing density. High ZCR (>0.32) triggers Hi-Hats, low ZCR (<0.12) with fast energy rise triggers Kick drums, and mid ZCR (0.12–0.26) triggers Snare cracks.</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">D</div>
+            <div class="step-content">
+              <h4>Direct Form II Biquad Formant Filters & Sound Engines</h4>
+              <p>Renders target instrument audio through dedicated mathematical generators (Karplus-Strong plucked feedback lines, stick-slip bowed friction saw waves, and additive harmonics).</p>
+            </div>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-num">E</div>
+            <div class="step-content">
+              <h4>Multi-Track Stereo Mixer with Soft Limiter</h4>
+              <p>Applies constant-power stereo panning (<code>cos</code>/<code>sin</code> gain laws) and mixes tracks into interleaved stereo short arrays. A <code>tanh</code> soft-knee limiter prevents digital clipping distortion.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="sub-heading" id="yin-pitch">YIN Pitch Detection Implementation</h3>
+        <p>
+          Excerpt from <code>com.example.voicesongstudio.dsp.PitchDetector.kt</code> showing the difference function and Cumulative Mean Normalized Difference calculation:
+        </p>
+
+        <div class="code-block-container">
+          <div class="code-header">
+            <span>app/src/main/java/com/example/voicesongstudio/dsp/PitchDetector.kt</span>
+            <button class="btn-copy">Copy</button>
+          </div>
+          <pre><code><span class="code-comment">// Step 1: Calculate Difference Function: d(tau) = sum_j (x[j] - x[j+tau])^2</span>
+<span class="code-kw">for</span> (tau <span class="code-kw">in</span> 0 until halfWindow) {
+    <span class="code-kw">var</span> diffSum = 0.0f
+    <span class="code-kw">for</span> (j <span class="code-kw">in</span> 0 until halfWindow) {
+        <span class="code-kw">val</span> diff = (audio[offset + j] - audio[offset + j + tau]) / 32768.0f
+        diffSum += diff * diff
+    }
+    buffer[tau] = diffSum
+}
+
+<span class="code-comment">// Step 2: Cumulative Mean Normalized Difference Function</span>
+buffer[0] = 1.0f
+<span class="code-kw">var</span> runningSum = 0.0f
+<span class="code-kw">for</span> (tau <span class="code-kw">in</span> 1 until halfWindow) {
+    runningSum += buffer[tau]
+    buffer[tau] = <span class="code-kw">if</span> (runningSum > 0f) {
+        buffer[tau] * tau / runningSum
+    } <span class="code-kw">else</span> {
+        1.0f
+    }
+}</code></pre>
+        </div>
+
+        <h3 class="sub-heading" id="transient-analysis">Beatbox Drum Transient Detection</h3>
+        <p>
+          Excerpt from <code>com.example.voicesongstudio.dsp.TransientDetector.kt</code> classifying beatboxing sounds into drum kit instruments:
+        </p>
+
+        <div class="code-block-container">
+          <div class="code-header">
+            <span>app/src/main/java/com/example/voicesongstudio/dsp/TransientDetector.kt</span>
+            <button class="btn-copy">Copy</button>
+          </div>
+          <pre><code><span class="code-kw">val</span> drumType = <span class="code-kw">when</span> {
+    <span class="code-comment">// High zero crossing rate & high frequency energy -> Hi-hat ("tss", "chi")</span>
+    zcr > 0.32f -> {
+        <span class="code-kw">if</span> (currentRms > 0.25f) DrumType.HIHAT_OPEN <span class="code-kw">else</span> DrumType.HIHAT_CLOSED
+    }
+    <span class="code-comment">// Low zero-crossing rate and prominent low-end punch -> Kick drum ("boom", "buh")</span>
+    zcr < 0.12f -> DrumType.KICK
+    <span class="code-comment">// Mid-range burst with moderate zero crossings -> Snare drum ("ka", "pff")</span>
+    zcr <span class="code-kw">in</span> 0.12f..0.26f -> DrumType.SNARE
+    <span class="code-kw">else</span> -> DrumType.TOM
+}</code></pre>
+        </div>
+
+        <h3 class="sub-heading" id="multitrack-mixer">Multi-Track Stereo Mixing Engine</h3>
+        <p>
+          Excerpt from <code>com.example.voicesongstudio.audio.MultiTrackMixer.kt</code> executing constant-power stereo panning and soft-knee saturation:
+        </p>
+
+        <div class="code-block-container">
+          <div class="code-header">
+            <span>app/src/main/java/com/example/voicesongstudio/audio/MultiTrackMixer.kt</span>
+            <button class="btn-copy">Copy</button>
+          </div>
+          <pre><code><span class="code-comment">// Constant-power panning law: cos(theta) Left, sin(theta) Right</span>
+<span class="code-kw">val</span> panAngle = (track.pan + 1.0f) * (PI.toFloat() / 4.0f) <span class="code-comment">// 0 to PI/2</span>
+<span class="code-kw">val</span> leftGain = cos(panAngle) * track.volume
+<span class="code-kw">val</span> rightGain = sin(panAngle) * track.volume
+
+leftAccum += rawSample * leftGain
+rightAccum += rawSample * rightGain
+
+<span class="code-comment">// Soft saturation limiter to prevent digital clipping</span>
+<span class="code-kw">val</span> limitedLeft = tanh(leftAccum)
+<span class="code-kw">val</span> limitedRight = tanh(rightAccum)
+
+stereoPcmChunk[frame * 2] = (limitedLeft * 32767.0f).toInt().coerceIn(-32768, 32767).toShort()
+stereoPcmChunk[frame * 2 + 1] = (limitedRight * 32767.0f).toInt().coerceIn(-32768, 32767).toShort()</code></pre>
+        </div>
+      </section>
+
+      <!-- Package & Code Structure -->
+      <section id="package-structure">
+        <h2 class="section-heading">
+          <span>📦 Package Structure & Project Organization</span>
+        </h2>
+        <p>The codebase follows Clean Architecture with a reactive Jetpack Compose presentation layer:</p>
+
+        <div class="code-block-container">
+          <div class="code-header">
+            <span>Repository Directory Tree</span>
+            <button class="btn-copy">Copy</button>
+          </div>
+          <pre><code>VoiceSongStudio/
+├── app/
+│   ├── build.gradle.kts                   # AGP 8.5.2, Compose BOM, Android 34
+│   └── src/main/
+│       ├── AndroidManifest.xml            # RECORD_AUDIO permission, FileProvider
+│       └── java/com/example/voicesongstudio/
+│           ├── MainActivity.kt            # Permission handler & Compose entry point
+│           ├── audio/                     # Low-level audio streaming & file IO
+│           │   ├── AudioRecorder.kt       # Live mic capture + RMS callbacks
+│           │   ├── AudioTrackPlayer.kt    # Low-latency PCM stream player
+│           │   ├── MultiTrackMixer.kt     # Multi-track mixing & WAV exporter
+│           │   ├── MetronomeGenerator.kt  # Count-in & BPM click tracks
+│           │   └── WavFileHelper.kt       # 16-bit RIFF WAV encoder/decoder
+│           ├── dsp/                       # Signal processing algorithms
+│           │   ├── FormantFilter.kt       # Biquad Direct Form II IIR filters
+│           │   ├── MusicalScale.kt        # Chinese Pentatonic & Western pitch snapping
+│           │   ├── PitchDetector.kt       # YIN pitch tracking algorithm
+│           │   └── TransientDetector.kt   # Beatbox ZCR transient analyzer
+│           ├── model/                     # Immutable data models
+│           │   ├── DemoSongFactory.kt     # 6-track "Silk Road Beats" demo song
+│           │   ├── SongProject.kt         # Project metadata & loop lengths
+│           │   └── TrackData.kt           # Channel volume, pan, mute, solo, audio
+│           ├── synthesis/                 # Acoustic & Procedural sound generators
+│           │   ├── DrumSynthesizer.kt     # Kick, Snare, Hi-Hat, Tom, Shaker synthesis
+│           │   ├── InstrumentType.kt      # Instrument definitions & octave offsets
+│           │   ├── TunedSynthEngine.kt    # Erhu, Guzheng, Dizi, Piano, Violin, Bass
+│           │   ├── VocalEffectsEngine.kt  # Autotune pitch snapping & Vocoder
+│           │   └── VoiceTransformer.kt    # Master voice-to-instrument coordinator
+│           └── ui/                        # Presentation layer (Jetpack Compose)
+│               ├── components/            # Waveform visualizers, Transport bar, Dialogs
+│               ├── screens/               # StudioScreen, ExportDialog
+│               ├── theme/                 # Dark studio theme & typography
+│               └── viewmodel/             # StudioViewModel (reactive StateFlow)
+└── docs/                                  # App Documentation Website (GitHub Pages)</code></pre>
+        </div>
+      </section>
+
+      <!-- Troubleshooting -->
+      <section id="troubleshooting">
+        <h2 class="section-heading">
+          <span>❓ Troubleshooting & FAQ</span>
+        </h2>
+
+        <div class="callout note">
+          <div class="callout-title">Q: Why do I hear silence when recording my voice on an emulator?</div>
+          <p>Make sure your Android Virtual Device (AVD) settings have "Virtual microphone uses host audio input" enabled in <em>Settings -> Microphone</em>, or test on a physical Android device.</p>
+        </div>
+
+        <div class="callout tip">
+          <div class="callout-title">Q: How do I export my song and play it in VLC or send it to friends?</div>
+          <p>Tap the <strong>Export (Download)</strong> icon in the top app bar. Name your song and tap <strong>Render & Export WAV</strong>. You can then tap <strong>Share Master Audio</strong> to send the uncompressed 16-bit 44.1 kHz stereo audio file directly via WhatsApp, Telegram, Email, or Google Drive.</p>
+        </div>
+
+        <div class="callout note">
+          <div class="callout-title">Q: Can I plug in external headphones or Bluetooth microphones?</div>
+          <p>Yes! Android's native <code>AudioRecord</code> and <code>AudioTrack</code> APIs automatically route audio through plugged-in USB-C audio interfaces, 3.5mm headphone jacks, and Bluetooth audio devices.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>VoiceSong Studio • Native Android App in Kotlin • Licensed under Apache 2.0</p>
+    <p style="margin-top: 6px;">
+      Source code available on <a href="https://github.com/ijobregister/make-music-by-voice-recording" target="_blank" rel="noopener noreferrer">GitHub</a>.
+    </p>
+  </footer>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
